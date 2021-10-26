@@ -31,13 +31,17 @@ function Particle (x, y, radius) {
   this.radians = randNumBetween(0, Math.PI*2)
   this.velocity = randNumBetween(0.02, 0.05)
   this.distance = randNumBetween(100, 200)
-
+  this.lastMouse = { xPos: x, yPos: y}
 
   this.update = () => {
+    // drag effect
+    this.lastMouse.xPos += (mouse.xPos - this.lastMouse.xPos) * 0.1
+    this.lastMouse.yPos += (mouse.yPos - this.lastMouse.yPos) * 0.1
+
     const prevPos = {x: this.x, y: this.y}
     this.radians += this.velocity
-    this.x = x + Math.cos(this.radians) * this.distance
-    this.y = y + Math.sin(this.radians) * this.distance
+    this.x = this.lastMouse.xPos + Math.cos(this.radians) * this.distance // ref the last mouse to get drag
+    this.y = this.lastMouse.yPos + Math.sin(this.radians) * this.distance
     this.draw(prevPos)
   }
 
