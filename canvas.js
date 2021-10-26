@@ -12,7 +12,7 @@ const randNumBetween = (min, max, isInt) => {
     isInt ? Math.floor(randNum) : randNum
   )
 }
-
+let ccw = false
 let mouse = {xPos: 0, yPos: 0} 
 const mouseUpdate = (e) => {
   // console.log(e)
@@ -21,6 +21,10 @@ const mouseUpdate = (e) => {
 }
 addEventListener('mousemove', (e) => {
   mouseUpdate(e)
+})
+
+addEventListener('click', (e) => {
+  ccw = !ccw
 })
 
 // object
@@ -40,8 +44,13 @@ function Particle (x, y, radius) {
 
     const prevPos = {x: this.x, y: this.y}
     this.radians += this.velocity
-    this.x = this.lastMouse.xPos + Math.cos(this.radians) * this.distance // ref the last mouse to get drag
-    this.y = this.lastMouse.yPos + Math.sin(this.radians) * this.distance
+    if (!ccw) {
+      this.x = this.lastMouse.xPos + Math.cos(this.radians) * this.distance // ref the last mouse to get drag
+      this.y = this.lastMouse.yPos + Math.sin(this.radians) * this.distance
+    } else {
+      this.x = this.lastMouse.xPos + Math.sin(this.radians) * this.distance // ref the last mouse to get drag
+      this.y = this.lastMouse.yPos + Math.cos(this.radians) * this.distance
+    }
     this.draw(prevPos)
   }
 
